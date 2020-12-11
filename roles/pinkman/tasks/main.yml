@@ -74,6 +74,7 @@
   tags: [ orangutan, pinkman ]
 
 - name: Save iptables rules
-  iptables_state:
+  community.general.iptables_state:
     state: saved
+    path: /etc/sysconfig/iptables
   tags: [ orangutan, pinkman ]
