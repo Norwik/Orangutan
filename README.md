@@ -1,7 +1,7 @@
 <p align="center">
     <img alt="Orangutan Logo" src="/static/logo.png?v=0.1.0" height="200" />
     <h3 align="center">Orangutan</h3>
-    <p align="center">Pinkman and Moose Deployment Playbook.</p>
+    <p align="center">Moose Deployment Playbook.</p>
     <p align="center">
         <a href="https://github.com/Norwik/Orangutan/actions/workflows/build.yml">
             <img src="https://github.com/Norwik/Orangutan/actions/workflows/build.yml/badge.svg"/>
