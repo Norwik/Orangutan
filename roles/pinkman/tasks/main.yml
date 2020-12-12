@@ -1,0 +1,79 @@
+# Copyright 2023 Norwik
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+
+- name: Install python3-pip
+  apt:
+    name: python3-pip
+    state: present
+  tags: [ orangutan, pinkman ]
+
+- name: Install pinkman
+  pip:
+    name: pinkman
+    state: present
+  tags: [ orangutan, pinkman ]
+
+- name: Create config.pinkman.prod.yml
+  template:
+    src: config.pinkman.prod.yml.j2
+    dest: /etc/config.pinkman.prod.yml
+  notify:
+    - reload pinkman_server
+    - reload pinkman_worker
+  tags: [ orangutan, pinkman ]
+
+- name: Create pinkman_server systemd file
+  template:
+    src: pinkman_server.service.j2
+    dest: /etc/systemd/system/pinkman_server.service
+  notify: reload pinkman_server
+  tags: [ orangutan, pinkman ]
+
+- name: Start pinkman_server service
+  service:
+    name: pinkman_server
+    state: started
+    enabled: yes
+  tags: [ orangutan, pinkman ]
+
+- name: Create pinkman_worker systemd file
+  template:
+    src: pinkman_worker.service.j2
+    dest: /etc/systemd/system/pinkman_worker.service
+  notify: reload pinkman_worker
+  tags: [ orangutan, pinkman ]
+
+- name: Start pinkman_worker service
+  service:
+    name: pinkman_worker
+    state: started
+    enabled: yes
+  tags: [ orangutan, pinkman ]
+
+- name: Add iptables rule
+  iptables:
+    table: nat
+    chain: PREROUTING
+    protocol: tcp
+    destination_port: 1025
+    jump: REDIRECT
+    to_ports: 25
+  tags: [ orangutan, pinkman ]
+
+- name: Save iptables rules
+  iptables_state:
+    state: saved
+  tags: [ orangutan, pinkman ]

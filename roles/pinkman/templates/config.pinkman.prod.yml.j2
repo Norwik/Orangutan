@@ -1,0 +1,13 @@
+server:
+  hostname: {{ pinkman_hostname }}
+  port: {{ pinkman_port }}
+
+cache:
+  type: sqlite
+  path: /tmp/pinkman.db
+
+backend:
+  type: http
+  method: post
+  url: {{ pinkman_backend_url }}
+  apikey: {{ pinkman_backend_api_key }}

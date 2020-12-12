@@ -1,0 +1,16 @@
+[Unit]
+Description=Pinkman Server
+After=multi-user.target
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+User={{ system_user }}
+Group={{ system_group }}
+Type=simple
+RestartSec=5s
+Restart=on-failure
+ExecStart=pinkman server run -c /etc/config.pinkman.prod.yml
+
+[Install]
+WantedBy=multi-user.target
